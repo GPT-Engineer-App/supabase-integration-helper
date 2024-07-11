@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchDetectionsByDateRange } from '@/integrations/supabase/index.js';
 import { format, subDays, subMonths } from 'date-fns';
-import { Loader } from '@/components/ui/loader';
+import Loader from '@/components/ui/loader';
 
 const Index = () => {
   const today = new Date();
