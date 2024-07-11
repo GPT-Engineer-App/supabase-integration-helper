@@ -3,6 +3,7 @@ import { fetchDetectionsByDateRange } from '@/integrations/supabase/index.js';
 import { format, subDays, subMonths } from 'date-fns';
 import Loader from '@/components/ui/loader';
 import CameraFeed from '@/components/CameraFeed';
+import { useEffect, useState } from 'react';
 
 const Index = () => {
   const today = new Date();
@@ -11,24 +12,43 @@ const Index = () => {
   const startOfWeek = format(subDays(today, today.getDay()), 'yyyy-MM-dd 00:00:00');
   const startOfMonth = format(subMonths(today, 1), 'yyyy-MM-dd 00:00:00');
 
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
   const { data: dailyDetections, isLoading: isLoadingDaily, error: errorDaily } = useQuery({
     queryKey: ['dailyDetections'],
     queryFn: () => fetchDetectionsByDateRange(startOfDay, endOfDay),
+    enabled: isOnline,
   });
 
   const { data: weeklyDetections, isLoading: isLoadingWeekly, error: errorWeekly } = useQuery({
     queryKey: ['weeklyDetections'],
     queryFn: () => fetchDetectionsByDateRange(startOfWeek, endOfDay),
+    enabled: isOnline,
   });
 
   const { data: monthlyDetections, isLoading: isLoadingMonthly, error: errorMonthly } = useQuery({
     queryKey: ['monthlyDetections'],
     queryFn: () => fetchDetectionsByDateRange(startOfMonth, endOfDay),
+    enabled: isOnline,
   });
 
   const { data: allTimeDetections, isLoading: isLoadingAllTime, error: errorAllTime } = useQuery({
     queryKey: ['allTimeDetections'],
     queryFn: fetchDetectionsByDateRange,
+    enabled: isOnline,
   });
 
   if (errorDaily || errorWeekly || errorMonthly || errorAllTime) {
@@ -45,7 +65,7 @@ const Index = () => {
         <p>All-Time Count: {isLoadingAllTime ? <Loader /> : allTimeDetections?.length ?? 'N/A'}</p>
       </div>
       <CameraFeed />
-      {!navigator.onLine && <div className="text-red-500 mt-4">You are currently offline. Some features may not be available.</div>}
+      {!isOnline && <div className="text-red-500 mt-4">You are currently offline. Some features may not be available.</div>}
     </div>
   );
 };
