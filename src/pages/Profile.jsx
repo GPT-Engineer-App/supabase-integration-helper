@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
@@ -36,10 +37,16 @@ const Profile = () => {
   }
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <h1 className="text-2xl mb-4">Profile</h1>
-      <p>Email: {profile.email}</p>
-      <Button onClick={handleLogout}>Logout</Button>
+    <div className="flex items-center justify-center min-h-screen p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-center text-2xl">Profile</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="mb-4">Email: {profile.email}</p>
+          <Button onClick={handleLogout} className="w-full">Logout</Button>
+        </CardContent>
+      </Card>
     </div>
   );
 };
