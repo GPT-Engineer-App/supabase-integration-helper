@@ -31,24 +31,28 @@ const Index = () => {
     queryKey: ['dailyDetections'],
     queryFn: () => fetchDetectionsByDateRange(startOfDay, endOfDay),
     enabled: isOnline,
+    refetchInterval: 60000, // Refetch data every 60 seconds
   });
 
   const { data: weeklyDetections, isLoading: isLoadingWeekly, error: errorWeekly } = useQuery({
     queryKey: ['weeklyDetections'],
     queryFn: () => fetchDetectionsByDateRange(startOfWeek, endOfDay),
     enabled: isOnline,
+    refetchInterval: 60000, // Refetch data every 60 seconds
   });
 
   const { data: monthlyDetections, isLoading: isLoadingMonthly, error: errorMonthly } = useQuery({
     queryKey: ['monthlyDetections'],
     queryFn: () => fetchDetectionsByDateRange(startOfMonth, endOfDay),
     enabled: isOnline,
+    refetchInterval: 60000, // Refetch data every 60 seconds
   });
 
   const { data: allTimeDetections, isLoading: isLoadingAllTime, error: errorAllTime } = useQuery({
     queryKey: ['allTimeDetections'],
     queryFn: fetchDetectionsByDateRange,
     enabled: isOnline,
+    refetchInterval: 60000, // Refetch data every 60 seconds
   });
 
   if (errorDaily || errorWeekly || errorMonthly || errorAllTime) {
