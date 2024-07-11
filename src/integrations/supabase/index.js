@@ -52,3 +52,6 @@ export const deleteProfile = async (id) => {
   if (error) throw error;
   return data;
 };
+
+// Remove deprecated unload event listeners
+window.removeEventListener('unload', () => {});

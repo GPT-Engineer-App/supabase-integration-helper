@@ -27,20 +27,26 @@ const Register = () => {
       <form onSubmit={handleRegister}>
         <div className="mb-4">
           <Input
+            id="email"
+            name="email"
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            autoComplete="email"
           />
         </div>
         <div className="mb-4">
           <Input
+            id="password"
+            name="password"
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            autoComplete="new-password"
           />
         </div>
         <Button type="submit">Register</Button>
