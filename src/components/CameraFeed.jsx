@@ -1,10 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
+import ReactWebcam from 'react-webcam';
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import '@tensorflow/tfjs';
 import { createDetection } from '@/integrations/supabase/index.js';
 
 const CameraFeed = () => {
-  const videoRef = useRef(null);
+  const webcamRef = useRef(null);
   const [model, setModel] = useState(null);
   const [detections, setDetections] = useState([]);
   const [detectionInterval, setDetectionInterval] = useState(500); // Default interval set to 500ms
@@ -19,20 +20,10 @@ const CameraFeed = () => {
   }, []);
 
   useEffect(() => {
-    const startVideo = async () => {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment' },
-      });
-      videoRef.current.srcObject = stream;
-    };
-
-    startVideo();
-  }, []);
-
-  useEffect(() => {
     const detectObjects = async () => {
-      if (model && videoRef.current) {
-        const predictions = await model.detect(videoRef.current);
+      if (model && webcamRef.current && webcamRef.current.video.readyState === 4) {
+        const video = webcamRef.current.video;
+        const predictions = await model.detect(video);
         setDetections(predictions);
         predictions.forEach(async (prediction) => {
           await saveDetectionOffline({ object: prediction.class, detected_at: new Date().toISOString() });
@@ -66,7 +57,12 @@ const CameraFeed = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-8 lg:p-12">
       <h1 className="text-2xl md:text-4xl font-bold mb-4">Camera Feed</h1>
-      <video ref={videoRef} autoPlay playsInline muted className="w-full max-w-md" />
+      <ReactWebcam
+        ref={webcamRef}
+        audio={false}
+        screenshotFormat="image/jpeg"
+        className="w-full max-w-md"
+      />
       <div className="text-base md:text-lg space-y-2 mt-4">
         {detections.map((detection, index) => (
           <p key={index}>{detection.class}: {Math.round(detection.score * 100)}%</p>
