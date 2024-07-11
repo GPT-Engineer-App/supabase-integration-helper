@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchDetectionsByDateRange } from '@/integrations/supabase/index.js';
 import { format, subDays, subMonths } from 'date-fns';
+import { Loader } from '@/components/ui/loader';
 
 const Index = () => {
   const today = new Date();
@@ -30,13 +31,13 @@ const Index = () => {
   });
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center min-h-screen p-4">
       <h1 className="text-4xl font-bold mb-4">Object Detection Counts</h1>
-      <div className="text-lg">
-        <p>Daily Count: {isLoadingDaily ? 'Loading...' : dailyDetections.length}</p>
-        <p>Weekly Count: {isLoadingWeekly ? 'Loading...' : weeklyDetections.length}</p>
-        <p>Monthly Count: {isLoadingMonthly ? 'Loading...' : monthlyDetections.length}</p>
-        <p>All-Time Count: {isLoadingAllTime ? 'Loading...' : allTimeDetections.length}</p>
+      <div className="text-lg space-y-2">
+        <p>Daily Count: {isLoadingDaily ? <Loader /> : dailyDetections.length}</p>
+        <p>Weekly Count: {isLoadingWeekly ? <Loader /> : weeklyDetections.length}</p>
+        <p>Monthly Count: {isLoadingMonthly ? <Loader /> : monthlyDetections.length}</p>
+        <p>All-Time Count: {isLoadingAllTime ? <Loader /> : allTimeDetections.length}</p>
       </div>
     </div>
   );
