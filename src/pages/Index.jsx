@@ -50,7 +50,7 @@ const Index = () => {
 
   const { data: allTimeDetections, isLoading: isLoadingAllTime, error: errorAllTime } = useQuery({
     queryKey: ['allTimeDetections'],
-    queryFn: fetchDetectionsByDateRange,
+    queryFn: () => fetchDetectionsByDateRange('1970-01-01 00:00:00', endOfDay),
     enabled: isOnline,
     refetchInterval: 60000, // Refetch data every 60 seconds
   });
