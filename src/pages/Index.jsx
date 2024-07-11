@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchDetectionsByDateRange } from '@/integrations/supabase/index.js';
 import { format, subDays, subMonths } from 'date-fns';
 import Loader from '@/components/ui/loader';
-import CameraFeed from '@/components/CameraFeed';
+import WasmCameraFeed from '@/components/WasmCameraFeed';
 import { useEffect, useState } from 'react';
 import DetectionCounter from '@/components/DetectionCounter';
 
@@ -69,7 +69,7 @@ const Index = () => {
         monthlyCount={isLoadingMonthly ? null : monthlyDetections?.length ?? 'N/A'}
         allTimeCount={isLoadingAllTime ? null : allTimeDetections?.length ?? 'N/A'}
       />
-      <CameraFeed />
+      <WasmCameraFeed />
       {!isOnline && <div className="text-red-500 mt-4">You are currently offline. Some features may not be available.</div>}
     </div>
   );
