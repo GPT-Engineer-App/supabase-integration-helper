@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchDetectionsByDateRange } from '@/integrations/supabase/index.js';
 import { format, subDays, subMonths } from 'date-fns';
 import Loader from '@/components/ui/loader';
+import CameraFeed from '@/components/CameraFeed';
 
 const Index = () => {
   const today = new Date();
@@ -43,6 +44,7 @@ const Index = () => {
         <p>Monthly Count: {isLoadingMonthly ? <Loader /> : monthlyDetections?.length ?? 'N/A'}</p>
         <p>All-Time Count: {isLoadingAllTime ? <Loader /> : allTimeDetections?.length ?? 'N/A'}</p>
       </div>
+      <CameraFeed />
     </div>
   );
 };
