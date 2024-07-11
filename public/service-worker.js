@@ -26,7 +26,7 @@ self.addEventListener('fetch', event => {
         if (response) {
           return response;
         }
-        return fetch(event.request).then(
+        return fetch(event.request, { mode: 'cors', credentials: 'same-origin' }).then(
           response => {
             if (!response || response.status !== 200 || response.type !== 'basic') {
               return response;
