@@ -8,6 +8,8 @@ import Index from "./pages/Index.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Profile from "./pages/Profile.jsx";
+import Settings from "./pages/Settings.jsx"; // Import the new Settings page
+
 const queryClient = new QueryClient();
 
 export const navItems = [
@@ -31,6 +33,11 @@ export const navItems = [
     to: "/profile",
     icon: <Home className="h-4 w-4" />,
   },
+  {
+    title: "Settings", // Add Settings to the navigation items
+    to: "/settings",
+    icon: <Home className="h-4 w-4" />,
+  },
 ];
 
 const App = () => {
@@ -45,6 +52,7 @@ const App = () => {
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
               <Route path="profile" element={<Profile />} />
+              <Route path="settings" element={<Settings />} /> {/* Add the new Settings route */}
               {/* Add more routes here as needed */}
             </Route>
           </Routes>
