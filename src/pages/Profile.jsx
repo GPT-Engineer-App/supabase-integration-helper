@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,6 +16,7 @@ const Profile = () => {
       } else {
         setProfile(data);
       }
+      setLoading(false);
     };
 
     fetchProfile();
@@ -25,7 +27,7 @@ const Profile = () => {
     navigate('/login');
   };
 
-  if (!profile) {
+  if (loading) {
     return <p>Loading...</p>;
   }
 
