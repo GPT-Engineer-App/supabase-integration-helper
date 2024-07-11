@@ -31,6 +31,10 @@ const Profile = () => {
     return <p>Loading...</p>;
   }
 
+  if (!profile) {
+    return <p>No profile data found.</p>;
+  }
+
   return (
     <div className="max-w-md mx-auto mt-10">
       <h1 className="text-2xl mb-4">Profile</h1>
