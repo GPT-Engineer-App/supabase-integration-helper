@@ -31,8 +31,8 @@ const Settings = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <h1 className="text-2xl mb-4">Settings</h1>
+    <div className="max-w-md mx-auto mt-10 p-4 md:p-8 lg:p-12">
+      <h1 className="text-2xl md:text-3xl mb-4">Settings</h1>
       {error && <p className="text-red-500">{error}</p>}
       <div className="mb-4">
         <label htmlFor="detectionInterval" className="block text-sm font-medium text-gray-700">

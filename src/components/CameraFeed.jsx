@@ -64,10 +64,10 @@ const CameraFeed = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-4xl font-bold mb-4">Camera Feed</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-8 lg:p-12">
+      <h1 className="text-2xl md:text-4xl font-bold mb-4">Camera Feed</h1>
       <video ref={videoRef} autoPlay playsInline muted className="w-full max-w-md" />
-      <div className="text-lg space-y-2 mt-4">
+      <div className="text-base md:text-lg space-y-2 mt-4">
         {detections.map((detection, index) => (
           <p key={index}>{detection.class}: {Math.round(detection.score * 100)}%</p>
         ))}

@@ -36,9 +36,9 @@ const Index = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-4xl font-bold mb-4">Object Detection Counts</h1>
-      <div className="text-lg space-y-2">
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-8 lg:p-12">
+      <h1 className="text-2xl md:text-4xl font-bold mb-4">Object Detection Counts</h1>
+      <div className="text-base md:text-lg space-y-2">
         <p>Daily Count: {isLoadingDaily ? <Loader /> : dailyDetections?.length ?? 'N/A'}</p>
         <p>Weekly Count: {isLoadingWeekly ? <Loader /> : weeklyDetections?.length ?? 'N/A'}</p>
         <p>Monthly Count: {isLoadingMonthly ? <Loader /> : monthlyDetections?.length ?? 'N/A'}</p>
