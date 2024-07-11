@@ -7,6 +7,7 @@ const CameraFeed = () => {
   const videoRef = useRef(null);
   const [model, setModel] = useState(null);
   const [detections, setDetections] = useState([]);
+  const [detectionInterval, setDetectionInterval] = useState(500); // Default interval set to 500ms
 
   useEffect(() => {
     const loadModel = async () => {
@@ -39,10 +40,10 @@ const CameraFeed = () => {
       }
     };
 
-    const intervalId = setInterval(detectObjects, 1000);
+    const intervalId = setInterval(detectObjects, detectionInterval);
 
     return () => clearInterval(intervalId);
-  }, [model]);
+  }, [model, detectionInterval]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
