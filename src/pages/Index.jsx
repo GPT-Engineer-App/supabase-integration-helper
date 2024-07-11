@@ -4,6 +4,7 @@ import { format, subDays, subMonths } from 'date-fns';
 import Loader from '@/components/ui/loader';
 import CameraFeed from '@/components/CameraFeed';
 import { useEffect, useState } from 'react';
+import DetectionCounter from '@/components/DetectionCounter';
 
 const Index = () => {
   const today = new Date();
@@ -62,12 +63,12 @@ const Index = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-8 lg:p-12">
       <h1 className="text-2xl md:text-4xl font-bold mb-4">Object Detection Counts</h1>
-      <div className="text-base md:text-lg space-y-2">
-        <p>Daily Count: {isLoadingDaily ? <Loader /> : dailyDetections?.length ?? 'N/A'}</p>
-        <p>Weekly Count: {isLoadingWeekly ? <Loader /> : weeklyDetections?.length ?? 'N/A'}</p>
-        <p>Monthly Count: {isLoadingMonthly ? <Loader /> : monthlyDetections?.length ?? 'N/A'}</p>
-        <p>All-Time Count: {isLoadingAllTime ? <Loader /> : allTimeDetections?.length ?? 'N/A'}</p>
-      </div>
+      <DetectionCounter
+        dailyCount={isLoadingDaily ? null : dailyDetections?.length ?? 'N/A'}
+        weeklyCount={isLoadingWeekly ? null : weeklyDetections?.length ?? 'N/A'}
+        monthlyCount={isLoadingMonthly ? null : monthlyDetections?.length ?? 'N/A'}
+        allTimeCount={isLoadingAllTime ? null : allTimeDetections?.length ?? 'N/A'}
+      />
       <CameraFeed />
       {!isOnline && <div className="text-red-500 mt-4">You are currently offline. Some features may not be available.</div>}
     </div>
