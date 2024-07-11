@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import '@tensorflow/tfjs';
+import '@tensorflow/tfjs-backend-webgl';
 import { createDetection } from '@/integrations/supabase/index.js';
 
 const CameraFeed = () => {
@@ -11,6 +12,7 @@ const CameraFeed = () => {
 
   useEffect(() => {
     const loadModel = async () => {
+      await tf.setBackend('webgl'); // Use WebGL backend for better performance
       const loadedModel = await cocoSsd.load();
       setModel(loadedModel);
     };
