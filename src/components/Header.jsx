@@ -8,7 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 const Header = () => {
   return (
     <header className="sticky top-0 z-50 flex items-center justify-between bg-background p-4 shadow-md">
-      <nav className="hidden md:flex md:items-center md:gap-5 lg:gap-6 text-lg font-medium md:text-sm">
+      <nav className="hidden md:flex md:items-center md:gap-5 lg:gap-6 text-base md:text-lg font-medium">
         {navItems.map((item) => (
           <NavItem key={item.to} to={item.to}>
             {item.title}
