@@ -5,7 +5,7 @@ const WasmCameraFeed = () => {
 
   useEffect(() => {
     const startCamera = async () => {
-      const { Camera } = await import('../wasm/camera_lib');
+      const { Camera } = await import('../wasm/camera_lib.js');
       const camera = new Camera('videoElement');
       camera.start();
     };
@@ -14,7 +14,7 @@ const WasmCameraFeed = () => {
 
     return () => {
       const stopCamera = async () => {
-        const { Camera } = await import('../wasm/camera_lib');
+        const { Camera } = await import('../wasm/camera_lib.js');
         const camera = new Camera('videoElement');
         camera.stop();
       };
