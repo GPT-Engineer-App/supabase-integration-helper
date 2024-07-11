@@ -45,6 +45,7 @@ const Index = () => {
         <p>All-Time Count: {isLoadingAllTime ? <Loader /> : allTimeDetections?.length ?? 'N/A'}</p>
       </div>
       <CameraFeed />
+      {!navigator.onLine && <div className="text-red-500 mt-4">You are currently offline. Some features may not be available.</div>}
     </div>
   );
 };

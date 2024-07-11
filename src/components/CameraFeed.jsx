@@ -35,7 +35,7 @@ const CameraFeed = () => {
         const predictions = await model.detect(videoRef.current);
         setDetections(predictions);
         predictions.forEach(async (prediction) => {
-          await createDetection({ object: prediction.class, detected_at: new Date().toISOString() });
+          await saveDetectionOffline({ object: prediction.class, detected_at: new Date().toISOString() });
         });
       }
     };
@@ -44,6 +44,24 @@ const CameraFeed = () => {
 
     return () => clearInterval(intervalId);
   }, [model, detectionInterval]);
+
+  const saveDetectionOffline = async (detection) => {
+    if (navigator.onLine) {
+      await createDetection(detection);
+    } else {
+      const request = indexedDB.open('detectionsDB', 1);
+      request.onupgradeneeded = event => {
+        const db = event.target.result;
+        db.createObjectStore('detections', { autoIncrement: true });
+      };
+      request.onsuccess = event => {
+        const db = event.target.result;
+        const transaction = db.transaction(['detections'], 'readwrite');
+        const store = transaction.objectStore('detections');
+        store.add(detection);
+      };
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
