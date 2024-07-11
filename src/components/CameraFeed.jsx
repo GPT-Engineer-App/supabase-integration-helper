@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import '@tensorflow/tfjs';
 import '@tensorflow/tfjs-backend-webgl';
+import * as tf from '@tensorflow/tfjs'; // Import TensorFlow.js
 import { createDetection } from '@/integrations/supabase/index.js';
 
 const CameraFeed = () => {
