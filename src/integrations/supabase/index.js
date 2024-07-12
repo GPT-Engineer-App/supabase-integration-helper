@@ -13,6 +13,7 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
  * | name       | type        | format | required |
  * |------------|-------------|--------|----------|
  * | id         | uuid        | string | true     |
+ * | username   | text        | string | true     |
  * | email      | text        | string | true     |
  * | created_at | timestamptz | string | true     |
  * 
@@ -21,10 +22,23 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
  * | name       | type        | format | required |
  * |------------|-------------|--------|----------|
  * | id         | int8        | number | true     |
- * | object     | text        | string | true     |
- * | detected_at| timestamptz | string | true     |
+ * | timestamp  | timestamptz | string | true     |
+ * | object_type| text        | string | true     |
+ * | count      | int4        | number | true     |
  * 
  */
+
+import { createContext, useContext } from 'react';
+
+const SupabaseContext = createContext();
+
+export const SupabaseProvider = ({ children }) => {
+  return React.createElement(SupabaseContext.Provider, { value: supabase }, children);
+};
+
+export const useSupabase = () => {
+  return useContext(SupabaseContext);
+};
 
 // Function to fetch all profiles
 export const fetchProfiles = async () => {
@@ -70,7 +84,7 @@ export const fetchDetections = async () => {
 
 // Function to fetch detections by date range
 export const fetchDetectionsByDateRange = async (startDate, endDate) => {
-  const { data, error } = await supabase.from('detections').select('*').gte('detected_at', startDate).lte('detected_at', endDate);
+  const { data, error } = await supabase.from('detections').select('*').gte('timestamp', startDate).lte('timestamp', endDate);
   if (error) throw error;
   return data;
 };
@@ -94,6 +108,16 @@ export const deleteDetection = async (id) => {
   const { data, error } = await supabase.from('detections').delete().eq('id', id);
   if (error) throw error;
   return data;
+};
+
+// Function to subscribe to real-time updates for detections
+export const subscribeToDetections = (callback) => {
+  return supabase
+    .from('detections')
+    .on('INSERT', payload => {
+      callback(payload.new);
+    })
+    .subscribe();
 };
 
 // Remove deprecated unload event listeners
