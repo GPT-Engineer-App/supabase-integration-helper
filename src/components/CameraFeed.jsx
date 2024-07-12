@@ -8,7 +8,7 @@ const CameraFeed = () => {
   const webcamRef = useRef(null);
   const [model, setModel] = useState(null);
   const [detections, setDetections] = useState([]);
-  const [detectionInterval, setDetectionInterval] = useState(500); // Default interval set to 500ms
+  const [detectionInterval, setDetectionInterval] = useState(500);
 
   useEffect(() => {
     const loadModel = async () => {
@@ -62,7 +62,7 @@ const CameraFeed = () => {
         audio={false}
         screenshotFormat="image/jpeg"
         className="w-full max-w-md"
-        videoConstraints={{ facingMode: "environment" }} // Use the back camera
+        videoConstraints={{ facingMode: "environment" }}
       />
       <div className="text-base md:text-lg space-y-2 mt-4">
         {detections.map((detection, index) => (
