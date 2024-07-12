@@ -28,6 +28,22 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
  * 
  */
 
+import { createContext, useContext } from 'react';
+
+const SupabaseContext = createContext();
+
+export const SupabaseProvider = ({ children }) => {
+  return (
+    <SupabaseContext.Provider value={supabase}>
+      {children}
+    </SupabaseContext.Provider>
+  );
+};
+
+export const useSupabase = () => {
+  return useContext(SupabaseContext);
+};
+
 // Function to fetch all profiles
 export const fetchProfiles = async () => {
   const { data, error } = await supabase.from('profiles').select('*');
