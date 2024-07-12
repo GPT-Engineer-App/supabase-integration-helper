@@ -33,11 +33,7 @@ import { createContext, useContext } from 'react';
 const SupabaseContext = createContext();
 
 export const SupabaseProvider = ({ children }) => {
-  return (
-    <SupabaseContext.Provider value={supabase}>
-      {children}
-    </SupabaseContext.Provider>
-  );
+  return React.createElement(SupabaseContext.Provider, { value: supabase }, children);
 };
 
 export const useSupabase = () => {
