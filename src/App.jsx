@@ -9,6 +9,8 @@ import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Profile from "./pages/Profile.jsx";
 import Settings from "./pages/Settings.jsx"; // Import the new Settings page
+import ProfilesPage from "./pages/ProfilesPage.jsx"; // Import the new ProfilesPage
+import DetectionsPage from "./pages/DetectionsPage.jsx"; // Import the new DetectionsPage
 
 const queryClient = new QueryClient();
 
@@ -38,6 +40,16 @@ export const navItems = [
     to: "/settings",
     icon: <Home className="h-4 w-4" />,
   },
+  {
+    title: "Profiles", // Add Profiles to the navigation items
+    to: "/profiles",
+    icon: <Home className="h-4 w-4" />,
+  },
+  {
+    title: "Detections", // Add Detections to the navigation items
+    to: "/detections",
+    icon: <Home className="h-4 w-4" />,
+  },
 ];
 
 const App = () => {
@@ -53,6 +65,8 @@ const App = () => {
               <Route path="register" element={<Register />} />
               <Route path="profile" element={<Profile />} />
               <Route path="settings" element={<Settings />} /> {/* Add the new Settings route */}
+              <Route path="profiles" element={<ProfilesPage />} /> {/* Add the new ProfilesPage route */}
+              <Route path="detections" element={<DetectionsPage />} /> {/* Add the new DetectionsPage route */}
               {/* Add more routes here as needed */}
             </Route>
           </Routes>
