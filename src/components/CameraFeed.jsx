@@ -62,6 +62,7 @@ const CameraFeed = () => {
         audio={false}
         screenshotFormat="image/jpeg"
         className="w-full max-w-md"
+        videoConstraints={{ facingMode: { exact: "environment" } }} // Use the back camera
       />
       <div className="text-base md:text-lg space-y-2 mt-4">
         {detections.map((detection, index) => (
