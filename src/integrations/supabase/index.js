@@ -1,124 +1,71 @@
 import { createClient } from '@supabase/supabase-js';
+import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_PROJECT_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_API_KEY;
-
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
-/**
- * Types for Supabase tables
- * 
- * ### profiles
- * 
- * | name       | type        | format | required |
- * |------------|-------------|--------|----------|
- * | id         | uuid        | string | true     |
- * | username   | text        | string | true     |
- * | email      | text        | string | true     |
- * | created_at | timestamptz | string | true     |
- * 
- * ### detections
- * 
- * | name       | type        | format | required |
- * |------------|-------------|--------|----------|
- * | id         | int8        | number | true     |
- * | timestamp  | timestamptz | string | true     |
- * | object_type| text        | string | true     |
- * | count      | int4        | number | true     |
- * 
- */
+import React from "react";
+export const queryClient = new QueryClient();
+export function SupabaseProvider({ children }) {
+    return React.createElement(QueryClientProvider, { client: queryClient }, children);
+}
 
-import { createContext, useContext } from 'react';
-
-const SupabaseContext = createContext();
-
-export const SupabaseProvider = ({ children }) => {
-  return React.createElement(SupabaseContext.Provider, { value: supabase }, children);
+const fromSupabase = async (query) => {
+    const { data, error } = await query;
+    if (error) throw new Error(error.message);
+    return data;
 };
 
-export const useSupabase = () => {
-  return useContext(SupabaseContext);
+/* supabase integration types
+
+// EXAMPLE TYPES SECTION
+// DO NOT USE TYPESCRIPT
+
+### foos
+
+| name    | type | format | required |
+|---------|------|--------|----------|
+| id      | int8 | number | true     |
+| title   | text | string | true     |
+| date    | date | string | true     |
+
+### bars
+
+| name    | type | format | required |
+|---------|------|--------|----------|
+| id      | int8 | number | true     |
+| foo_id  | int8 | number | true     |  // foreign key to foos
+	
+*/
+
+// Example hook for models
+
+export const useFoo = ()=> useQuery({
+    queryKey: ['foos'],
+    queryFn: fromSupabase(supabase.from('foos')),
+})
+export const useAddFoo = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (newFoo)=> fromSupabase(supabase.from('foos').insert([{ title: newFoo.title }])),
+        onSuccess: ()=> {
+            queryClient.invalidateQueries('foos');
+        },
+    });
 };
 
-// Function to fetch all profiles
-export const fetchProfiles = async () => {
-  const { data, error } = await supabase.from('profiles').select('*');
-  if (error) throw error;
-  return data;
+export const useBar = ()=> useQuery({
+    queryKey: ['bars'],
+    queryFn: fromSupabase(supabase.from('bars')),
+})
+export const useAddBar = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (newBar)=> fromSupabase(supabase.from('bars').insert([{ foo_id: newBar.foo_id }])),
+        onSuccess: ()=> {
+            queryClient.invalidateQueries('bars');
+        },
+    });
 };
 
-// Function to fetch a single profile by ID
-export const fetchProfileById = async (id) => {
-  const { data, error } = await supabase.from('profiles').select('*').eq('id', id).single();
-  if (error) throw error;
-  return data;
-};
-
-// Function to create a new profile
-export const createProfile = async (profile) => {
-  const { data, error } = await supabase.from('profiles').insert(profile);
-  if (error) throw error;
-  return data;
-};
-
-// Function to update a profile by ID
-export const updateProfile = async (id, profile) => {
-  const { data, error } = await supabase.from('profiles').update(profile).eq('id', id);
-  if (error) throw error;
-  return data;
-};
-
-// Function to delete a profile by ID
-export const deleteProfile = async (id) => {
-  const { data, error } = await supabase.from('profiles').delete().eq('id', id);
-  if (error) throw error;
-  return data;
-};
-
-// Function to fetch all detections
-export const fetchDetections = async () => {
-  const { data, error } = await supabase.from('detections').select('*');
-  if (error) throw error;
-  return data;
-};
-
-// Function to fetch detections by date range
-export const fetchDetectionsByDateRange = async (startDate, endDate) => {
-  const { data, error } = await supabase.from('detections').select('*').gte('timestamp', startDate).lte('timestamp', endDate);
-  if (error) throw error;
-  return data;
-};
-
-// Function to create a new detection
-export const createDetection = async (detection) => {
-  const { data, error } = await supabase.from('detections').insert(detection);
-  if (error) throw error;
-  return data;
-};
-
-// Function to update a detection by ID
-export const updateDetection = async (id, detection) => {
-  const { data, error } = await supabase.from('detections').update(detection).eq('id', id);
-  if (error) throw error;
-  return data;
-};
-
-// Function to delete a detection by ID
-export const deleteDetection = async (id) => {
-  const { data, error } = await supabase.from('detections').delete().eq('id', id);
-  if (error) throw error;
-  return data;
-};
-
-// Function to subscribe to real-time updates for detections
-export const subscribeToDetections = (callback) => {
-  return supabase
-    .from('detections')
-    .on('INSERT', payload => {
-      callback(payload.new);
-    })
-    .subscribe();
-};
-
-// Remove deprecated unload event listeners
-window.removeEventListener('unload', () => {});
