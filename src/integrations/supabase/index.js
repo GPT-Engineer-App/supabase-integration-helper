@@ -12,19 +12,19 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
  * 
  * | name       | type        | format | required |
  * |------------|-------------|--------|----------|
- * | id         | uuid        | string | true     |
- * | username   | text        | string | true     |
- * | email      | text        | string | true     |
- * | created_at | timestamptz | string | true     |
+ * | id         | int4        | number | true     |
+ * | username   | varchar     | string | true     |
+ * | email      | varchar     | string | true     |
+ * | created_at | timestamp   | string | true     |
  * 
  * ### detections
  * 
  * | name       | type        | format | required |
  * |------------|-------------|--------|----------|
- * | id         | int8        | number | true     |
- * | timestamp  | timestamptz | string | true     |
- * | object_type| text        | string | true     |
+ * | id         | int4        | number | true     |
+ * | object_type| varchar     | string | true     |
  * | count      | int4        | number | true     |
+ * | timestamp  | timestamp   | string | true     |
  * 
  */
 
